@@ -7,12 +7,10 @@ require('dotenv').config();
 const PORT = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI;
 
-/******/
 const UsrController = require('./controllers/user');
+const PelucheController = require('./controllers/peluche');
 const AuthController = require('./controllers/auth');
 const Middleware = require('./middleware/auth-middleware');
-const MailController = require('./controllers/mail');
-
 
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -150,6 +148,7 @@ app.post("/auth/login", async (req,res) => {
 
     const email = req.body.email;
     const password = req.body.password;
+    console.log(req.body)
     try{
       const result = await AuthController.login(email,password);
       if(result){
@@ -158,6 +157,7 @@ app.post("/auth/login", async (req,res) => {
         res.status(401).send("No puede estar aqui")
       }
     }catch(error){
+        console.log(error)
         res.status(500).send("Error");
     }  
 })
