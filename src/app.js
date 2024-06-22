@@ -1,32 +1,41 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const http = require("http").createServer(app);
-const cors = require("cors");
-require("dotenv").config();
-const PORT = process.env.PORT;
-const uri = process.env.MONGODB_URI;
 
-// Connect to MongoDB
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('Successfully connected to MongoDB');
-})
-.catch((err) => {
-  console.error('Error connecting to MongoDB:', err);
-});
+const {PORT} = require('./utils/config');
+const {MONGODB_URI} = require('./utils/config');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+app.use(cors()); 
+app.use(express.json());
+
+const usersRouter = require('./routes/userRouter');
+const authRouter = require('./routes/authRouter');
+const pelucheRouter = require('./routes/pelucheRouter');
+const rankingRouter = require('./routes/rankingRouter');
+
+
+//mongoose
+  //.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+ // .then(() => {
+//    console.log("connected");
+//  })
+//  .catch((err) => console.log(err));
 
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRouter);
+app.use('/api', usersRouter);
+app.use('/api', pelucheRouter);
+app.use('/api', rankingRouter);
+
+
+
+// Endpont main.
 app.get("/", (req, res) => {
-    //res.send("Hola estoy funcionando.");
-    res.status(200).json("Hello I am working now");
+  res.status(200).json("Hola estoy funcionando.");
 });
 
-http.listen(PORT, () => {
-    console.log(`Listening to ${PORT}`);
-  });
+
+app.listen(PORT, ()=> {
+    console.log(`Server corriendo en puerto ${PORT}`);
+});

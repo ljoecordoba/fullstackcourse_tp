@@ -27,7 +27,8 @@ const usrSchema = new Schema({
 	password:{
 		type: String,
 		required:true
-	}
+	},
+	peluches: [{ type: Schema.Types.ObjectId, ref: 'peluche' }]
 	
 }, { timestamps: true } ).set('toJSON',{
     transform: (document, object) => {
@@ -35,6 +36,7 @@ const usrSchema = new Schema({
         delete object._id;
         delete object.password;
     }
+	
 });
 
 
