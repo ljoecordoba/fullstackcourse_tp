@@ -18,6 +18,7 @@ authRouter.post("/login", async (req,res) => {
         res.status(401).send("Credenciales invalidas")
       }
     }catch(error){
+        console.log(error)
         res.status(500).send("Error");
     }  
 })

@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 const {SECRET} = require('../utils/config.js');
 
 const login = async(email,password) => {
-
+    console.log("trying")
     const cryptoPass = require('crypto')
         .createHash('sha256')
         .update(password)
         .digest('hex');
-
+    console.log("cryptoPass: ",cryptoPass)
     const  result = await Usr.findOne({ email: email, isActive:true, password:cryptoPass })
     
     if (result){
